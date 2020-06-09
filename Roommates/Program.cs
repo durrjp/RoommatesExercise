@@ -71,10 +71,13 @@ Living in the {roommate.Room.Name}");
                         }
                         break;
                     case 2:
-                        List<Roommate> roomies = roommateRepo.GetAllWithRoom(3);
+                        Console.WriteLine("Enter room id to return who lives in that room");
+                        string roomyRoomString = Console.ReadLine();
+                        int roomyRoomId = int.Parse(roomyRoomString);
+                        List<Roommate> roomies = roommateRepo.GetAllWithRoom(roomyRoomId);
                         foreach (Roommate roommate in roomies)
                         {
-                            Console.WriteLine($"{roommate.Firstname}");
+                            Console.WriteLine($"{roommate.Firstname} {roommate.Lastname}");
                         }
                         break;
                     case 3:
