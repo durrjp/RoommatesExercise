@@ -17,6 +17,8 @@ namespace Roommates
         {
             RoomRepository roomRepo = new RoomRepository(CONNECTION_STRING);
             RoommateRepository roommateRepo = new RoommateRepository(CONNECTION_STRING);
+            ChoreRepository choreRepo = new ChoreRepository(CONNECTION_STRING);
+            RoommateChoreRepo rcRepo = new RoommateChoreRepo(CONNECTION_STRING);
 
             //Console.WriteLine("Getting All Rooms:");
             //Console.WriteLine();
@@ -141,6 +143,22 @@ Living in the {roommate.Room.Name}");
                         int intOfRoomyKick = Int32.Parse(stringOfRoomyKick);
                         roommateRepo.Delete(intOfRoomyKick);
                         break;
+                    case 6:
+                        Console.WriteLine("Enter roommate Id of roomy who needs some chores:");
+                        string rmString = Console.ReadLine();
+                        int rmInt = int.Parse(rmString);
+                        Roommate lazyRoomy = roommateRepo.GetById(rmInt);
+
+                        Console.WriteLine("Enter the name of the chore to complete");
+                        string choreName = Console.ReadLine();
+                        Chore newChore = new Chore()
+                        {
+                            Name = choreName
+                        };
+                        choreRepo.Insert(newChore);
+                        Chore choreSelected = choreRepo.GetWithChoreName(newChore.Name);
+                        rcRepo.InsertRC(lazyRoomy, choreSelected);
+                        break;
                     case 0:
                         Console.WriteLine("Goodbye");
                         return;
@@ -154,7 +172,7 @@ Living in the {roommate.Room.Name}");
             {
                 int selection = -1;
 
-                while (selection < 0 || selection > 5)
+                while (selection < 0 || selection > 6)
                 {
                     Console.WriteLine("Roommates Menu");
                     Console.WriteLine(" 1) List all roommates");
@@ -162,6 +180,7 @@ Living in the {roommate.Room.Name}");
                     Console.WriteLine(" 3) Add new roommate");
                     Console.WriteLine(" 4) Update roommate info");
                     Console.WriteLine(" 5) Remove roommate");
+                    Console.WriteLine(" 6) Add Chore");
                     Console.WriteLine(" 0) Exit");
 
                     Console.Write("> ");
