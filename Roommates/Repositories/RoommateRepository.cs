@@ -102,7 +102,9 @@ namespace Roommates.Repositories
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT roommate.Id AS 'roomyId', FirstName, LastName, MoveInDate, RentPortion, room.Id AS 'roomId', room.Name AS 'roomName', room.MaxOccupancy AS 'roomOcc' FROM Roommate roommate JOIN Room room ON room.Id = Roommate.RoomId WHERE roommate.RoomId = @roomId";
+                    cmd.CommandText = @"SELECT roommate.Id AS 'roomyId', FirstName, LastName, MoveInDate, RentPortion, room.Id AS 'roomId', room.Name AS 'roomName', room.MaxOccupancy AS 'roomOcc' 
+                    FROM Roommate roommate JOIN Room room ON room.Id = Roommate.RoomId 
+                    WHERE roommate.RoomId = @roomId";
                     cmd.Parameters.AddWithValue("@roomId", roomId);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -149,15 +151,10 @@ namespace Roommates.Repositories
                                 MaxOccupancy = roomOccValue
                             }
                         };
-
-                        // ...and add that room object to our list.
                         roommates.Add(roommate);
                     }
-
-                    // We should Close() the reader. Unfortunately, a "using" block won't work here.
                     reader.Close();
 
-                    // Return the list of rooms who whomever called this method.
                     return roommates;
                 }
             }
